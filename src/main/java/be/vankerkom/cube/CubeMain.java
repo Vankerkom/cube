@@ -2,7 +2,10 @@ package be.vankerkom.cube;
 
 import be.vankerkom.cube.input.Keyboard;
 import be.vankerkom.cube.input.Mouse;
+import be.vankerkom.cube.world.Chunk;
+import be.vankerkom.cube.world.ChunkManager;
 import org.joml.Matrix4f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -128,11 +131,13 @@ public class CubeMain {
         // Set the clear color
         glClearColor(135.0f / 255, 206.0F / 255, 250.0F / 255, 0.0f);
 
-        final Chunk chunk = new Chunk();
+        // final Chunk chunk = new Chunk(new Vector2i(0, 0));
 
-        final VertexArray block = VertexArrayFactory.createCube(0,-2,0);
+        final ChunkManager chunkManager = new ChunkManager();
 
-        final VertexArray vao = chunk.createMesh();
+        // final VertexArray block = VertexArrayFactory.createCube(0,-2,0);
+
+        //final VertexArray vao = chunk.createMesh();
 
         final Shader shader = new Shader("static", "static");
 
@@ -179,8 +184,9 @@ public class CubeMain {
             shader.setUniform("projection", projectionMatrix);
             shader.setUniform("view", camera.viewMatrix);
 
-            vao.draw(GL_TRIANGLES);
-            block.draw(GL_TRIANGLES);
+            chunkManager.draw(shader);
+            //vao.draw(GL_TRIANGLES);
+            //block.draw(GL_TRIANGLES);
 
             glfwSwapBuffers(window); // swap the color buffers
 
@@ -191,7 +197,8 @@ public class CubeMain {
             glfwPollEvents();
         }
 
-        vao.destroy();
+        //vao.destroy();
+        chunkManager.destroy();
     }
 
     private void setMouseVisible(boolean visible) {

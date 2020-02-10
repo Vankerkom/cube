@@ -1,13 +1,25 @@
-package be.vankerkom.cube;
+package be.vankerkom.cube.world;
+
+import be.vankerkom.cube.ChunkMeshBuilder;
+import be.vankerkom.cube.Shader;
+import be.vankerkom.cube.VertexArray;
+import org.joml.Matrix4f;
+import org.joml.Vector2i;
+
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 public class Chunk {
 
-    private static final int SIZE = 8;
-    private static final int HEIGHT = 16;
+    private static final int SIZE = 16;
+    private static final int HEIGHT = 32;
 
+    private final Vector2i position;
+    private final Matrix4f transformMatrix = new Matrix4f().identity(); // Todo re-use this per chunk or something?
     private byte[] blocks = new byte[SIZE * SIZE * HEIGHT];
+    private VertexArray mesh;
 
-    public Chunk() {
+    public Chunk(Vector2i position) {
+        this.position = position;
         int blockIndex = 0;
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < SIZE; x++) {
@@ -16,6 +28,9 @@ public class Chunk {
                 }
             }
         }
+
+        this.transformMatrix.setTranslation(this.position.x << 4, 0, this.position.y << 4);
+        this.mesh = createMesh();
     }
 
     private static final int[] TOP_FACE = {1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1};
@@ -94,4 +109,14 @@ public class Chunk {
         return (SIZE * SIZE * y) + (z * SIZE) + x;
     }
 
+    public void draw(Shader shader) {
+        shader.setUniform("transform", this.transformMatrix);
+        mesh.draw(GL_TRIANGLES);
+    }
+
+    public void destroy() {
+        if (mesh != null) {
+            mesh.destroy();
+        }
+    }
 }
