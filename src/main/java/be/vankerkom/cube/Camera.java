@@ -1,5 +1,7 @@
 package be.vankerkom.cube;
 
+import be.vankerkom.cube.input.Keyboard;
+import be.vankerkom.cube.input.Mouse;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
