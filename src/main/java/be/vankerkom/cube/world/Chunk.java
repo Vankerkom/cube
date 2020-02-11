@@ -1,6 +1,5 @@
 package be.vankerkom.cube.world;
 
-import be.vankerkom.cube.ChunkMeshBuilder;
 import be.vankerkom.cube.Shader;
 import be.vankerkom.cube.VertexArray;
 import org.joml.Matrix4f;
@@ -10,27 +9,28 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
 public class Chunk {
 
-    private static final int SIZE = 16;
-    private static final int HEIGHT = 32;
+    public static final int SIZE = 16;
+    public static final int HEIGHT = 8;
 
+    private final ChunkManager chunkManager;
     private final Vector2i position;
     private final Matrix4f transformMatrix = new Matrix4f().identity(); // Todo re-use this per chunk or something?
     private byte[] blocks = new byte[SIZE * SIZE * HEIGHT];
     private VertexArray mesh;
 
-    public Chunk(Vector2i position) {
+    public Chunk(ChunkManager chunkManager, Vector2i position) {
+        this.chunkManager = chunkManager;
         this.position = position;
         int blockIndex = 0;
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < SIZE; x++) {
                 for (int z = 0; z < SIZE; z++) {
-                    blocks[blockIndex++] = (byte) (x == y ? 1 : 0);
+                    blocks[blockIndex++] = (byte) 1;
                 }
             }
         }
 
-        this.transformMatrix.setTranslation(this.position.x << 4, 0, this.position.y << 4);
-        this.mesh = createMesh();
+        this.transformMatrix.setTranslation((float) (this.position.x * SIZE), 0, (float) (this.position.y * SIZE));
     }
 
     private static final int[] TOP_FACE = {1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1};
@@ -40,7 +40,7 @@ public class Chunk {
     private static final int[] BACK_FACE = {0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0};
     private static final int[] LEFT_FACE = {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1};
 
-    public VertexArray createMesh() {
+    private VertexArray createMesh() {
         final ChunkMeshBuilder meshBuilder = new ChunkMeshBuilder();
 
         int blockIndex = 0;
@@ -91,25 +91,37 @@ public class Chunk {
     }
 
     private boolean isNotSolid(byte currentBlockType, int x, int y, int z) {
-        if (y < 0 || x < 0 || z < 0) {
+        if (y < 0 || y >= HEIGHT) {
             return true;
         }
 
-        if (y >= HEIGHT || x >= SIZE || z >= SIZE) {
-            return true;
+        byte otherBlockType;
+
+        if (x < 0 || z < 0 || x >= SIZE || z >= SIZE) { // Ask neighbours
+            final int worldX = position.x * SIZE + x;
+            final int worldZ = position.y * SIZE + z;
+            otherBlockType = chunkManager.getBlockAt(worldX, y, worldZ);
+        } else {
+            final int blockIndex = getBlockIndex(x, y, z);
+            otherBlockType = blocks[blockIndex];
         }
 
-        final int blockIndex = getBlockIndex(x, y, z);
-        final byte blockAtIndex = blocks[blockIndex];
-
-        return blockAtIndex != currentBlockType;
+        return otherBlockType == 0 || otherBlockType != currentBlockType;
     }
 
     private int getBlockIndex(int x, int y, int z) {
         return (SIZE * SIZE * y) + (z * SIZE) + x;
     }
 
+    public byte getBlockAt(int x, int y, int z) {
+        return blocks[getBlockIndex(x, y, z)];
+    }
+
     public void draw(Shader shader) {
+        if (mesh == null) {
+            return;
+        }
+
         shader.setUniform("transform", this.transformMatrix);
         mesh.draw(GL_TRIANGLES);
     }
@@ -118,5 +130,9 @@ public class Chunk {
         if (mesh != null) {
             mesh.destroy();
         }
+    }
+
+    public void generateMesh() {
+        this.mesh = createMesh();
     }
 }

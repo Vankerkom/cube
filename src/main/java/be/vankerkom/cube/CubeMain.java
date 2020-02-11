@@ -131,19 +131,13 @@ public class CubeMain {
         // Set the clear color
         glClearColor(135.0f / 255, 206.0F / 255, 250.0F / 255, 0.0f);
 
-        // final Chunk chunk = new Chunk(new Vector2i(0, 0));
-
         final ChunkManager chunkManager = new ChunkManager();
-
-        // final VertexArray block = VertexArrayFactory.createCube(0,-2,0);
-
-        //final VertexArray vao = chunk.createMesh();
 
         final Shader shader = new Shader("static", "static");
 
         shader.bind();
 
-        final Camera camera = new Camera(new Vector3f(0.0F, 0.0F, 3.0F));
+        final Camera camera = new Camera(new Vector3f(0.0F, 10.0F, 0.0F));
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -177,16 +171,15 @@ public class CubeMain {
                 glPolygonMode(GL_FRONT_AND_BACK, wireframe ? GL_LINE : GL_FILL);
             }
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
             camera.update(delta);
+            chunkManager.update();
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             shader.setUniform("projection", projectionMatrix);
             shader.setUniform("view", camera.viewMatrix);
 
             chunkManager.draw(shader);
-            //vao.draw(GL_TRIANGLES);
-            //block.draw(GL_TRIANGLES);
 
             glfwSwapBuffers(window); // swap the color buffers
 
@@ -197,7 +190,6 @@ public class CubeMain {
             glfwPollEvents();
         }
 
-        //vao.destroy();
         chunkManager.destroy();
     }
 
