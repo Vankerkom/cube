@@ -1,4 +1,4 @@
-package be.vankerkom.cube;
+package be.vankerkom.cube.graphics;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

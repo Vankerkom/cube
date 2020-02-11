@@ -1,6 +1,6 @@
 package be.vankerkom.cube.world;
 
-import be.vankerkom.cube.VertexArray;
+import be.vankerkom.cube.graphics.VertexArray;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;

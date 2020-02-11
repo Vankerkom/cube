@@ -1,4 +1,4 @@
-package be.vankerkom.cube;
+package be.vankerkom.cube.graphics;
 
 import be.vankerkom.cube.input.Keyboard;
 import be.vankerkom.cube.input.Mouse;

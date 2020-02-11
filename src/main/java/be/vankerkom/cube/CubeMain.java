@@ -1,11 +1,11 @@
 package be.vankerkom.cube;
 
+import be.vankerkom.cube.graphics.Camera;
+import be.vankerkom.cube.graphics.Shader;
 import be.vankerkom.cube.input.Keyboard;
 import be.vankerkom.cube.input.Mouse;
-import be.vankerkom.cube.world.Chunk;
 import be.vankerkom.cube.world.ChunkManager;
 import org.joml.Matrix4f;
-import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;

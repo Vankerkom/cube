@@ -1,4 +1,4 @@
-package be.vankerkom.cube;
+package be.vankerkom.cube.graphics;
 
 public final class VertexArrayFactory {
 

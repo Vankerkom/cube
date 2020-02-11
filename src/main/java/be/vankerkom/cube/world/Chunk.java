@@ -1,7 +1,7 @@
 package be.vankerkom.cube.world;
 
-import be.vankerkom.cube.Shader;
-import be.vankerkom.cube.VertexArray;
+import be.vankerkom.cube.graphics.Shader;
+import be.vankerkom.cube.graphics.VertexArray;
 import org.joml.Matrix4f;
 import org.joml.Vector2i;
 

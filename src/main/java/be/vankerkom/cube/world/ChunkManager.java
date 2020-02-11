@@ -1,6 +1,6 @@
 package be.vankerkom.cube.world;
 
-import be.vankerkom.cube.Shader;
+import be.vankerkom.cube.graphics.Shader;
 import org.joml.Vector2i;
 
 import java.util.LinkedHashMap;
