@@ -2,6 +2,7 @@ package be.vankerkom.cube;
 
 import be.vankerkom.cube.graphics.Camera;
 import be.vankerkom.cube.graphics.Shader;
+import be.vankerkom.cube.graphics.Texture;
 import be.vankerkom.cube.input.Keyboard;
 import be.vankerkom.cube.input.Mouse;
 import be.vankerkom.cube.world.ChunkManager;
@@ -13,6 +14,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import javax.xml.soap.Text;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -25,8 +27,8 @@ public class CubeMain {
 
     private long window;
     private Matrix4f projectionMatrix = new Matrix4f().identity();
-    private int width = 1280 / 2;
-    private int height = 720 / 2;
+    private int width = 1280;
+    private int height = 720;
     private boolean wireframe = false;
 
     public void run() {
@@ -131,6 +133,10 @@ public class CubeMain {
         // Set the clear color
         glClearColor(135.0f / 255, 206.0F / 255, 250.0F / 255, 0.0f);
 
+        final Texture texture = new Texture("test.jpg");
+
+        texture.bind();
+
         final ChunkManager chunkManager = new ChunkManager();
 
         final Shader shader = new Shader("static", "static");
@@ -191,6 +197,8 @@ public class CubeMain {
         }
 
         chunkManager.destroy();
+        texture.destroy();
+        shader.destroy();
     }
 
     private void setMouseVisible(boolean visible) {
