@@ -106,7 +106,7 @@ public class Chunk {
             otherBlockType = blocks[blockIndex];
         }
 
-        return otherBlockType == 0 || otherBlockType != currentBlockType;
+        return otherBlockType != currentBlockType;
     }
 
     private int getBlockIndex(int x, int y, int z) {

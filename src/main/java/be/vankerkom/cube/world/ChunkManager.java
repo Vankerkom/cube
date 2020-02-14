@@ -28,7 +28,7 @@ public class ChunkManager {
     }
 
     public byte getBlockAt(final int x, int y, int z) {
-        final Vector2i chunkPosition = new Vector2i(x / Chunk.SIZE, z / Chunk.SIZE);
+        final Vector2i chunkPosition = new Vector2i(x >> 4, z >> 4);
         final Chunk chunk = chunkList.get(chunkPosition);
         return chunk != null
                 ? chunk.getBlockAt(x & 0xF, y, z & 0xF)

@@ -52,7 +52,7 @@ public class ChunkMeshBuilder {
         uvCoordinates.add(1.0F);
 
         // The last int is the light level.
-        final byte lightLevel = (byte) (faceData[12] & 0x5);
+        final byte lightLevel = (byte) (faceData[12] & 0xF);
         lightLevels.add(lightLevel);
         lightLevels.add(lightLevel);
         lightLevels.add(lightLevel);
