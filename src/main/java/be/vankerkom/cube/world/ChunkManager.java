@@ -16,8 +16,8 @@ public class ChunkManager {
     private long totalChunkUpdates = 0;
 
     public ChunkManager() {
-        for (int x = -2; x < 2; x++) {
-            for (int z = -2; z < 2; z++) {
+        for (int x = -1; x < 1; x++) {
+            for (int z = -1; z < 1; z++) {
                 Vector2i position = new Vector2i(x, z);
                 final Chunk newChunk = new Chunk(this, position);
                 chunkList.put(position, newChunk);
