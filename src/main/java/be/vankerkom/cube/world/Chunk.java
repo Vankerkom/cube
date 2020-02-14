@@ -33,12 +33,12 @@ public class Chunk {
         this.transformMatrix.setTranslation((float) (this.position.x * SIZE), 0, (float) (this.position.y * SIZE));
     }
 
-    private static final int[] TOP_FACE = {1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1};
-    private static final int[] BOTTOM_FACE = {0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1};
-    private static final int[] FRONT_FACE = {1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1};
-    private static final int[] RIGHT_FACE = {1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0};
-    private static final int[] BACK_FACE = {0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0};
-    private static final int[] LEFT_FACE = {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1};
+    private static final int[] TOP_FACE = {1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 5};
+    private static final int[] BOTTOM_FACE = {0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 2};
+    private static final int[] FRONT_FACE = {1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 4};
+    private static final int[] RIGHT_FACE = {1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 3};
+    private static final int[] BACK_FACE = {0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 3};
+    private static final int[] LEFT_FACE = {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 3};
 
     private VertexArray createMesh() {
         final ChunkMeshBuilder meshBuilder = new ChunkMeshBuilder();

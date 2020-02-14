@@ -15,26 +15,21 @@ public class ChunkMeshBuilder {
     private ArrayList<Float> uvCoordinates = new ArrayList<>();
     private ArrayList<Byte> lightLevels = new ArrayList<>();
 
+    private int verticesCount = 0;
+
     public void addFace(int x, int y, int z, int[] faceData) {
-        int zero = vertices.size() / 3;
-        vertices.add((float) x + faceData[0]);
-        vertices.add((float) y + faceData[1]);
-        vertices.add((float) z + faceData[2]);
+        for (int i = 0; i < 12; i += 3) {
+            vertices.add((float) x + faceData[i]);
+            vertices.add((float) y + faceData[i + 1]);
+            vertices.add((float) z + faceData[i + 2]);
+        }
 
-        int one = vertices.size() / 3;
-        vertices.add((float) x + faceData[3]);
-        vertices.add((float) y + faceData[4]);
-        vertices.add((float) z + faceData[5]);
+        int zero = verticesCount;
+        int one = verticesCount + 1;
+        int two = verticesCount + 2;
+        int three = verticesCount + 3;
 
-        int two = vertices.size() / 3;
-        vertices.add((float) x + faceData[6]);
-        vertices.add((float) y + faceData[7]);
-        vertices.add((float) z + faceData[8]);
-
-        int three = vertices.size() / 3;
-        vertices.add((float) x + faceData[9]);
-        vertices.add((float) y + faceData[10]);
-        vertices.add((float) z + faceData[11]);
+        verticesCount += 4;
 
         // 0, 1, 2, 2, 3, 0
         incides.add(zero);
@@ -56,10 +51,12 @@ public class ChunkMeshBuilder {
         uvCoordinates.add(0.0F);
         uvCoordinates.add(1.0F);
 
-        lightLevels.add((byte)5);
-        lightLevels.add((byte)5);
-        lightLevels.add((byte)5);
-        lightLevels.add((byte)5);
+        // The last int is the light level.
+        final byte lightLevel = (byte) (faceData[12] & 0x5);
+        lightLevels.add(lightLevel);
+        lightLevels.add(lightLevel);
+        lightLevels.add(lightLevel);
+        lightLevels.add(lightLevel);
     }
 
     public VertexArray build() {
