@@ -1,10 +1,9 @@
 package be.vankerkom.cube.world;
 
 import be.vankerkom.cube.graphics.VertexArray;
-import org.joml.Vector2f;
-import org.joml.Vector2i;
 import org.lwjgl.BufferUtils;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ public class ChunkMeshBuilder {
     private ArrayList<Float> vertices = new ArrayList<>();
     private ArrayList<Integer> incides = new ArrayList<>();
     private ArrayList<Float> uvCoordinates = new ArrayList<>();
+    private ArrayList<Byte> lightLevels = new ArrayList<>();
 
     public void addFace(int x, int y, int z, int[] faceData) {
         int zero = vertices.size() / 3;
@@ -55,6 +55,11 @@ public class ChunkMeshBuilder {
 
         uvCoordinates.add(0.0F);
         uvCoordinates.add(1.0F);
+
+        lightLevels.add((byte)5);
+        lightLevels.add((byte)5);
+        lightLevels.add((byte)5);
+        lightLevels.add((byte)5);
     }
 
     public VertexArray build() {
@@ -74,15 +79,22 @@ public class ChunkMeshBuilder {
             uvBuffer.put(uv);
         }
 
+        final ByteBuffer lightBuffer = BufferUtils.createByteBuffer(lightLevels.size());
+        for (byte lightLevel : lightLevels) {
+            lightBuffer.put(lightLevel);
+        }
+
         vertBuffer.flip();
         incidesBuffer.flip();
         uvBuffer.flip();
+        lightBuffer.flip();
 
         // Generate a mesh per block.
         final VertexArray vao = new VertexArray();
         vao.bind();
         vao.addVertexBuffer(3, vertBuffer);
         vao.addVertexBuffer(2, uvBuffer);
+        vao.addVertexBuffer(1, lightBuffer);
         vao.addIndexBuffer(incidesBuffer, incides.size());
 
         return vao;

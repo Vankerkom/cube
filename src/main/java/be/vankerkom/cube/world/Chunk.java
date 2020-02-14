@@ -14,7 +14,7 @@ public class Chunk {
 
     private final ChunkManager chunkManager;
     private final Vector2i position;
-    private final Matrix4f transformMatrix = new Matrix4f().identity(); // Todo re-use this per chunk or something?
+    private final Matrix4f transformMatrix = new Matrix4f();
     private byte[] blocks = new byte[SIZE * SIZE * HEIGHT];
     private VertexArray mesh;
 
@@ -53,7 +53,7 @@ public class Chunk {
                     // Get the current block.
                     final byte currentBlockType = blocks[blockIndex++];
 
-                    if (currentBlockType == 0) { // Skip air blocks. // TODO Replace w/ a solid system.
+                    if (currentBlockType == 0) { // Skip air blocks.
                         continue;
                     }
 

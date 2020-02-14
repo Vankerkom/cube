@@ -133,7 +133,7 @@ public class CubeMain {
         // Set the clear color
         glClearColor(135.0f / 255, 206.0F / 255, 250.0F / 255, 0.0f);
 
-        final Texture texture = new Texture("test.jpg");
+        final Texture texture = new Texture("test.png");
 
         texture.bind();
 

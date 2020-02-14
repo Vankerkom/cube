@@ -2,6 +2,7 @@ package be.vankerkom.cube.graphics;
 
 import org.lwjgl.BufferUtils;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -28,6 +29,15 @@ public class VertexArray {
         glBindBuffer(GL_ARRAY_BUFFER, bufferId);
         glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
         glVertexAttribPointer(buffers.size(), size, GL_FLOAT, false, 0, 0);
+        glEnableVertexAttribArray(buffers.size());
+        buffers.add(bufferId);
+    }
+
+    public void addVertexBuffer(int size, ByteBuffer buffer) {
+        int bufferId = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
+        glVertexAttribPointer(buffers.size(), size, GL_BYTE, false, 0, 0);
         glEnableVertexAttribArray(buffers.size());
         buffers.add(bufferId);
     }
